@@ -1,0 +1,703 @@
+#:import utils kivy.utils
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+
+
+ScreenManager:
+	id: screen_manager
+	MainScreen:
+		name: "MainScreen"
+		id: MainScreen
+	ShowScheduleScreen:
+		name: "ShowScheduleScreen"
+		id: ShowScheduleScreen
+	AddScheduleScreen:
+		name: "AddScheduleScreen"
+		id: AddScheduleScreen
+	AddAlarmScreen:
+		name: "AddAlarmScreen"
+		id: AddAlarmScreen
+	ShowAlarmScreen:
+		name: "ShowAlarmScreen"
+		id: ShowAlarmScreen
+		
+<ShowScheduleScreen>:
+	FloatLayout:
+		canvas.before:
+			Color:
+				rgba: utils.get_color_from_hex("#0099e5")
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "resources/backgrounds/main_background.jpg"
+		size_hint: 1, 1
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.63 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: delSchedule_BTN
+				text: "Delete Schedule"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.remove_schedule ( app.sched_title, app.sched_day )
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.26 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: cancelSetSchedule_BTN
+				text: "Cancel"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.root.current = "MainScreen"
+		FloatLayout:
+			size_hint: 0.2, 0.2
+			pos_hint: { "x" : 0.03 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					source: "resources/labels/logo.png"
+		FloatLayout:
+			size_hint: 0.3 , 0.12
+			pos_hint: { "x" : 0.35, "y" : 0.67}
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					source: "resources/labels/schedule.jpg"
+		TextInput:
+            id: schedTitle_TextInput
+            hint_text: "Schedule's Title"
+            size_hint: 0.3, 0.1
+            pos_hint: {"x": 0.35, "y": 0.52 }
+			readonly: True
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		TextInput:
+            id: schedDay_TextInput
+            hint_text: "Schedule's Day ( e.g.: Monday )"
+            size_hint: .3, .1
+            pos_hint: {"x": 0.35 , "y" : 0.41}
+			readonly: True
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		TextInput:
+            id: schedNote_TextInput
+            hint_text: "Schedule's Note"
+            size_hint: 0.5 , 0.2
+            pos_hint: {"x": 0.25, "y" : 0.2 }
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		FloatLayout:
+			size_hint: 0.2, 0.1
+			pos_hint: { "x" : 0.4 ,  "y" : 0.06 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: updateSchedule_BTN
+				text: "Update"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.update_schedule ( schedTitle_TextInput.text, schedDay_TextInput.text, schedNote_TextInput.text )
+					app.update_all_widgets()
+		Label:
+            id: error_message
+            color: (1,0,0,1)
+            size_hint: .3, .1
+            pos_hint: {"x": 0.4 , "y" : 0.03}
+
+<ShowAlarmScreen>:
+	FloatLayout:
+		canvas.before:
+			Color:
+				rgba: utils.get_color_from_hex("#0099e5")
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "resources/backgrounds/main_background.jpg"
+		size_hint: 1, 1
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.63 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: delSchedule_BTN
+				text: "Delete Schedule"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.remove_alarm ( app.alarm_title, app.alarm_day )
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.26 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: cancelSetSchedule_BTN
+				text: "Cancel"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.root.current = "MainScreen"
+		FloatLayout:
+			size_hint: 0.2, 0.2
+			pos_hint: { "x" : 0.03 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					source: "resources/labels/logo.png"
+		FloatLayout:
+			size_hint: 0.3 , 0.12
+			pos_hint: { "x" : 0.35, "y" : 0.62}
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					source: "resources/labels/alarm.jpg"
+		TextInput:
+            id: alarmTitle_TextInput
+            hint_text: "Alarm's Title"
+            size_hint: 0.3, 0.1
+            pos_hint: {"x": 0.35, "y": 0.51 }
+			readonly: True
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		TextInput:
+            id: alarmDay_TextInput
+            hint_text: "Alarm's Day ( e.g. : Monday )"
+            size_hint: .3, .1
+            pos_hint: {"x": 0.35 , "y" : 0.38}
+			readonly: True
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		TextInput:
+            id: alarmTime_TextInput
+            hint_text: "Alarm's Time ( e.g. : 13:05 )"
+            size_hint: .3, .1
+            pos_hint: {"x": 0.35 , "y" : 0.25 }
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		FloatLayout:
+			size_hint: 0.2, 0.1
+			pos_hint: { "x" : 0.4 ,  "y" : 0.06 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: updateSchedule_BTN
+				text: "Update"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.update_alarm ( alarmTitle_TextInput.text, alarmDay_TextInput.text, alarmTime_TextInput.text )
+					app.update_all_widgets()
+		Label:
+            id: error_message
+            color: (1,0,0,1)
+            size_hint: .5, .1
+            pos_hint: {"x": 0.25 , "y" : 0.15 }
+
+<AddAlarmScreen>:
+	FloatLayout:
+		canvas.before:
+			Color:
+				rgba: utils.get_color_from_hex("#0099e5")
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "resources/backgrounds/main_background.jpg"
+		size_hint: 1, 1
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.63 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: setAlarm_BTN
+				text: "Set Alarm"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.add_alarm ( alarmTitle_TextInput.text, alarmDay_TextInput.text, alarmTime_TextInput.text )
+					app.update_all_widgets()
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.26 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: cancelSetSchedule_BTN
+				text: "Cancel"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.root.current = "MainScreen"
+		FloatLayout:
+			size_hint: 0.2, 0.2
+			pos_hint: { "x" : 0.03 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					source: "resources/labels/logo.png"
+		FloatLayout:
+			size_hint: 0.3 , 0.15
+			pos_hint: { "x" : 0.35, "y" : 0.64 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					source: "resources/labels/add_alarm.jpg"
+		TextInput:
+            id: alarmTitle_TextInput
+            hint_text: "Alarm's Title"
+            size_hint: 0.3, 0.1
+            pos_hint: {"x": 0.35, "y": 0.51 }
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		TextInput:
+            id: alarmDay_TextInput
+            hint_text: "Alarm Day ( e.g.: Monday )"
+            size_hint: .3, .1
+            pos_hint: {"x": 0.35 , "y" : 0.38 }
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		TextInput:
+            id: alarmTime_TextInput
+            hint_text: "Alarm Time ( e.g.: 13:05 )"
+            size_hint: .3, .1
+            pos_hint: {"x": 0.35 , "y" : 0.25 }
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		Label:
+            id: error_message
+            color: (1,0,0,1)
+            size_hint: .5, .1
+            pos_hint: {"x": 0.25 , "y" : 0.1 }
+		
+
+<AddScheduleScreen>:
+	FloatLayout:
+		canvas.before:
+			Color:
+				rgba: utils.get_color_from_hex("#0099e5")
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "resources/backgrounds/main_background.jpg"
+		size_hint: 1, 1
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.63 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: setSchedule_BTN
+				text: "Set Schedule"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.add_schedule ( schedTitle_TextInput.text, schedDay_TextInput.text, schedNote_TextInput.text )
+					app.update_all_widgets()
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.26 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: cancelSetSchedule_BTN
+				text: "Cancel"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.root.current = "MainScreen"
+		FloatLayout:
+			size_hint: 0.2, 0.2
+			pos_hint: { "x" : 0.03 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					source: "resources/labels/logo.png"
+		FloatLayout:
+			size_hint: 0.3 , 0.15
+			pos_hint: { "x" : 0.35, "y" : 0.64 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					source: "resources/labels/add_schedule.jpg" 
+		TextInput:
+            id: schedTitle_TextInput
+            hint_text: "Schedule's Title"
+            size_hint: 0.3, 0.1
+            pos_hint: {"x": 0.35, "y": 0.51 }
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		TextInput:
+            id: schedDay_TextInput
+            hint_text: "Schedule's Day ( e.g.: Monday )"
+            size_hint: .3, .1
+            pos_hint: {"x": 0.35 , "y" : 0.38 }
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		TextInput:
+            id: schedNote_TextInput
+            hint_text: "Schedule's Note"
+            size_hint: 0.5 , 0.25
+            pos_hint: {"x": 0.25, "y" : 0.1 }
+            on_text:
+                self.focus = not self.focus if self.text.endswith("\n") else self.focus
+                #self.text = self.text.replace("\n","")
+		Label:
+            id: error_message
+			#text: "INVALID INPUT: Schedule Title Already Exists"
+            color: (1,0,0,1)
+            size_hint: .5, .1
+            pos_hint: {"x": 0.25 , "y" : 0}
+		
+
+					
+					
+<MainScreen>:
+	FloatLayout:
+		canvas.before:
+			Color:
+				rgba: utils.get_color_from_hex("#0099e5")
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				source: "resources/backgrounds/main_background.jpg"
+		size_hint: 1, 1
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.63 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					#source: "resources/buttons/main_background.jpg"
+			Button:
+				id: addSchedule_BTN
+				text: "Add Schedule"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.root.current = "AddScheduleScreen"
+					app.root.ids['AddScheduleScreen'].ids['error_message'].text = ""
+		FloatLayout:
+			size_hint: 0.34, 0.2
+			pos_hint: { "x" : 0.26 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+			Button:
+				id: setAlarm_BTN
+				text: "Set Alarm"
+				size_hint: 1, 1
+				#background_color: 0, 0, 0, 0
+				pos_hint: { "x" : 0 , "y" : 0 }
+				on_release:
+					app.root.current = "AddAlarmScreen"
+					app.root.ids['AddAlarmScreen'].ids['error_message'].text = ""
+		FloatLayout:
+			size_hint: 0.2, 0.2
+			pos_hint: { "x" : 0.03 , "y" : 0.79 }
+			canvas.before:
+				Rectangle:
+					size: self.size
+					pos: self.pos
+					source: "resources/labels/logo.png"
+		ScrollView:
+			size_hint: 1, 0.78
+			effect_cls: ScrollEffect
+			GridLayout:
+				canvas.before:
+					Color:
+						rgba: utils.get_color_from_hex("#0099e5")
+					Rectangle:
+						size: self.size
+						pos: self.pos
+				cols: 1
+				size_hint_y: None
+				height: self.minimum_height
+				row_default_height: root.height * 0.3
+				row_force_default: True
+				spacing: root.width * 0.01, root.height * 0.01
+				FloatLayout:
+					canvas:
+						Color:
+							rgba: utils.get_color_from_hex("#6a737b")
+						Rectangle:
+							size: self.size
+							pos: self.pos
+					Image:
+						size_hint: 0.4, 0.3
+						pos_hint: {"x": 0.05, "y": 0.6}
+						allow_stretch: True
+						keep_ratio: False
+						source: "resources/labels/monday_scrollview.jpg"
+					ScrollView:
+						size_hint: 0.55, 0.5
+						pos_hint: {"x": 0.225, "y": 0.1}
+						GridLayout:
+							canvas:
+								Color:
+									rgba: utils.get_color_from_hex("#6a737b")
+								Rectangle:
+									size: self.size
+									pos: self.pos
+							rows: 1
+							size_hint_x: None
+							width: self.minimum_width
+							col_default_width: '100dp'
+							col_force_default: True
+							id: monday_scrollview
+							padding: 5
+							spacing: root.width * 0.01, root.height * 0.01
+				FloatLayout:
+					canvas:
+						Color:
+							rgba: utils.get_color_from_hex("#6a737b")
+						Rectangle:
+							size: self.size
+							pos: self.pos
+					Image:
+						size_hint: 0.4, 0.3
+						pos_hint: {"x": 0.05, "y": 0.6}
+						allow_stretch: True
+						keep_ratio: False
+						source: "resources/labels/tuesday_scrollview.jpg"
+					ScrollView:
+						size_hint: 0.55, 0.5
+						pos_hint: {"x": 0.225, "y": 0.1}
+						GridLayout:
+							canvas:
+								Color:
+									rgba: utils.get_color_from_hex("#6a737b")
+								Rectangle:
+									size: self.size
+									pos: self.pos
+							rows: 1
+							size_hint_x: None
+							width: self.minimum_width
+							col_default_width: '100dp'
+							col_force_default: True
+							id: tuesday_scrollview
+							padding: 5
+							spacing: root.width * 0.01, root.height * 0.01
+				FloatLayout:
+					canvas:
+						Color:
+							rgba: utils.get_color_from_hex("#6a737b")
+						Rectangle:
+							size: self.size
+							pos: self.pos
+					Image:
+						size_hint: 0.4, 0.3
+						pos_hint: {"x": 0.05, "y": 0.6}
+						allow_stretch: True
+						keep_ratio: False
+						source: "resources/labels/wednesday_scrollview.jpg"
+					ScrollView:
+						size_hint: 0.55, 0.5
+						pos_hint: {"x": 0.225, "y": 0.1}
+						GridLayout:
+							canvas:
+								Color:
+									rgba: utils.get_color_from_hex("#6a737b")
+								Rectangle:
+									size: self.size
+									pos: self.pos
+							rows: 1
+							size_hint_x: None
+							width: self.minimum_width
+							col_default_width: '100dp'
+							col_force_default: True
+							id: wednesday_scrollview
+							padding: 5
+							spacing: root.width * 0.01, root.height * 0.01
+				FloatLayout:
+					canvas:
+						Color:
+							rgba: utils.get_color_from_hex("#6a737b")
+						Rectangle:
+							size: self.size
+							pos: self.pos
+					Image:
+						size_hint: 0.4, 0.3
+						pos_hint: {"x": 0.05, "y": 0.6}
+						allow_stretch: True
+						keep_ratio: False
+						source: "resources/labels/thursday_scrollview.jpg"
+					ScrollView:
+						size_hint: 0.55, 0.5
+						pos_hint: {"x": 0.225, "y": 0.1}
+						GridLayout:
+							canvas:
+								Color:
+									rgba: utils.get_color_from_hex("#6a737b")
+								Rectangle:
+									size: self.size
+									pos: self.pos
+							rows: 1
+							size_hint_x: None
+							width: self.minimum_width
+							col_default_width: '100dp'
+							col_force_default: True
+							id: thursday_scrollview
+							padding: 5
+							spacing: root.width * 0.01, root.height * 0.01
+				FloatLayout:
+					canvas:
+						Color:
+							rgba: utils.get_color_from_hex("#6a737b")
+						Rectangle:
+							size: self.size
+							pos: self.pos
+					Image:
+						size_hint: 0.4, 0.3
+						pos_hint: {"x": 0.05, "y": 0.6}
+						allow_stretch: True
+						keep_ratio: False
+						source: "resources/labels/friday_scrollview.jpg"
+					ScrollView:
+						size_hint: 0.55, 0.5
+						pos_hint: {"x": 0.225, "y": 0.1}
+						GridLayout:
+							canvas:
+								Color:
+									rgba: utils.get_color_from_hex("#6a737b")
+								Rectangle:
+									size: self.size
+									pos: self.pos
+							rows: 1
+							size_hint_x: None
+							width: self.minimum_width
+							col_default_width: '100dp'
+							col_force_default: True
+							id: friday_scrollview
+							padding: 5
+							spacing: root.width * 0.01, root.height * 0.01
+				FloatLayout:
+					canvas:
+						Color:
+							rgba: utils.get_color_from_hex("#6a737b")
+						Rectangle:
+							size: self.size
+							pos: self.pos
+					Image:
+						size_hint: 0.4, 0.3
+						pos_hint: {"x": 0.05, "y": 0.6}
+						allow_stretch: True
+						keep_ratio: False
+						source: "resources/labels/saturday_scrollview.jpg"
+					ScrollView:
+						size_hint: 0.55, 0.5
+						pos_hint: {"x": 0.225, "y": 0.1}
+						GridLayout:
+							canvas:
+								Color:
+									rgba: utils.get_color_from_hex("#6a737b")
+								Rectangle:
+									size: self.size
+									pos: self.pos
+							rows: 1
+							size_hint_x: None
+							width: self.minimum_width
+							col_default_width: '100dp'
+							col_force_default: True
+							id: saturday_scrollview
+							padding: 5
+							spacing: root.width * 0.01, root.height * 0.01
+				FloatLayout:
+					canvas:
+						Color:
+							rgba: utils.get_color_from_hex("#6a737b")
+						Rectangle:
+							size: self.size
+							pos: self.pos
+					Image:
+						size_hint: 0.4, 0.3
+						pos_hint: {"x": 0.05, "y": 0.6}
+						allow_stretch: True
+						keep_ratio: False
+						source: "resources/labels/sunday_scrollview.jpg"
+					ScrollView:
+						size_hint: 0.55, 0.5
+						pos_hint: {"x": 0.225, "y": 0.1}
+						GridLayout:
+							canvas:
+								Color:
+									rgba: utils.get_color_from_hex("#6a737b")
+								Rectangle:
+									size: self.size
+									pos: self.pos
+							rows: 1
+							size_hint_x: None
+							width: self.minimum_width
+							col_default_width: '100dp'
+							col_force_default: True
+							id: sunday_scrollview
+							padding: 5
+							spacing: root.width * 0.01, root.height * 0.01
